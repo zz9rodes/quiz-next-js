@@ -1,0 +1,17 @@
+import { NextRequest } from 'next/server'
+import { verifyAdminToken } from '@/middleware/auth'
+import { okResponse } from '@/lib/response'
+import { handleError } from '@/utils/errors'
+import { AdminService } from '@/services/admin.service'
+
+export async function GET(request: NextRequest) {
+  try {
+    const authResult = verifyAdminToken(request)
+    if (authResult.error) return authResult.error
+
+    const result = await AdminService.getAllQuizzes()
+    return okResponse(result, 'Tous les quizzes')
+  } catch (error) {
+    return handleError(error)
+  }
+}
