@@ -8,9 +8,12 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
 
+    console.log(body)
+
     // Validate input
     const validated = signupValidator.parse(body)
 
+    console.log("validateur : ",validated)
     // Create user and generate token
     const result = await AuthService.signup(validated.email, validated.password, validated.display_name)
 
