@@ -67,7 +67,7 @@ export class QuizService {
       questions: quiz.questions.map((q) => ({
         id: q.id,
         question_text: q.questionText,
-        options: JSON.parse(q.options),
+        options: q.options as String[],
         correct_option_index: q.correctOptionIndex,
         order_index: q.orderIndex,
       })),
@@ -96,7 +96,7 @@ export class QuizService {
       questions: quiz.questions.map((q) => ({
         id: q.id,
         question_text: q.questionText,
-        options: JSON.parse(q.options),
+        options: q.options as String[],
         correct_option_index:q.correctOptionIndex
         // DO NOT return correct answers!
       })),
@@ -179,7 +179,7 @@ export class QuizService {
       const missedCounts = new Map<string, number>()
 
       quiz.participants.forEach((p) => {
-        const answers = JSON.parse(p.answers)
+        const answers = p.answers as String[] // JSON.parse(p.answers)
         answers.forEach((answer: any, index: number) => {
           const question = quiz.questions[index]
           if (question && answer.selected_option_index !== question.correctOptionIndex) {
@@ -189,7 +189,7 @@ export class QuizService {
       })
 
       let maxMissed = 0
-      let mostMissedId = null
+      let mostMissedId :any = null
       missedCounts.forEach((count, qId) => {
         if (count > maxMissed) {
           maxMissed = count

@@ -127,7 +127,7 @@ export class AdminService {
         questions: quiz.questions.map((q) => ({
           id: q.id,
           question_text: q.questionText,
-          options: JSON.parse(q.options),
+          options: q.options as string[] ,//JSON.parse(q.options),
           correct_option_index: q.correctOptionIndex,
           order_index: q.orderIndex,
         })),

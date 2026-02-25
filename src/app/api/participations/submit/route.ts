@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     const validated = participateValidator.parse(body)
 
     const result = await ParticipationService.submitParticipation(
-      validated.quiz_id,
+      'jhkh',
       validated.participant_name,
       validated.answers
     )

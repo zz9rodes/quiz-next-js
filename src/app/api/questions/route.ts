@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     const validated = createQuestionValidator.parse(body)
     const question = await QuestionService.createQuestion(
-      validated.quiz_id,
+      "validated.quiz_id",
       payload!.userId,
       validated.question_text,
       validated.options,

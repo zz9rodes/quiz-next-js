@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validated = createMessageValidator.parse(body)
 
-    const result = await MessageService.sendMessage(validated.public_key, validated.content)
+    const result = await MessageService.sendMessage("2", validated.content)
     return createdResponse({ id: result.data?.id, created_at: result.data?.created_at }, result.message)
   } catch (error) {
     return handleError(error)

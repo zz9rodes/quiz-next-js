@@ -48,7 +48,7 @@ export class ParticipationService {
           selected_option_index: answer.selected_option_index,
           correct_option_index: question.correctOptionIndex,
           is_correct: isCorrect,
-          options: JSON.parse(question.options),
+          options:question.options as string[],//  JSON.parse(question.options),
         })
 
         processedAnswers.push({
@@ -106,8 +106,8 @@ export class ParticipationService {
     )
     const results: any[] = []
 
-    if (Array.isArray(JSON.parse(participation.answers))) {
-      const answers = JSON.parse(participation.answers)
+    if (Array.isArray(participation.answers)) {
+      const answers = participation.answers as String[]
       answers.forEach((answer: any) => {
         const question = questionsMap.get(answer.question_id)
         if (question) {
@@ -118,7 +118,7 @@ export class ParticipationService {
             selected_option_index: answer.selected_option_index,
             correct_option_index: question.correctOptionIndex,
             is_correct: isCorrect,
-            options: JSON.parse(question.options),
+            options: question.options as String [] //JSON.parse(question.options),
           })
         }
       })
@@ -173,8 +173,8 @@ export class ParticipationService {
     )
     const results: any[] = []
 
-    if (Array.isArray(JSON.parse(participation.answers))) {
-      const answers = JSON.parse(participation.answers)
+    if (Array.isArray(participation.answers)) {
+      const answers = participation.answers as string[] // JSON.parse(participation.answers)
       answers.forEach((answer: any) => {
         const question = questionsMap.get(answer.question_id)
         if (question) {
@@ -185,7 +185,7 @@ export class ParticipationService {
             selected_option_index: answer.selected_option_index,
             correct_option_index: question.correctOptionIndex,
             is_correct: isCorrect,
-            options: JSON.parse(question.options),
+            options: question.options as string[] ,// JSON.parse(question.options),
           })
         }
       })

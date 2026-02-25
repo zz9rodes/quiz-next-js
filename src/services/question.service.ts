@@ -44,7 +44,7 @@ export class QuestionService {
       id: question.id,
       quiz_id: question.quizId,
       question_text: question.questionText,
-      options: JSON.parse(question.options),
+      options: question.options as String[],
       correct_option_index: question.correctOptionIndex,
       order_index: question.orderIndex,
     }
@@ -82,7 +82,7 @@ export class QuestionService {
     return {
       id: updated.id,
       question_text: updated.questionText,
-      options: JSON.parse(updated.options),
+      options: updated.options as String[],
       correct_option_index: updated.correctOptionIndex,
     }
   }
