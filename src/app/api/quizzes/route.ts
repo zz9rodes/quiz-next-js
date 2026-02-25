@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const { payload } = authResult
 
     const quizzes = await QuizService.getUserQuizzes(payload!.userId)
-    return okResponse(quizzes, 'Quizzes récupérés')
+    return okResponse({quizzes:quizzes}, 'Quizzes récupérés')
   } catch (error) {
     return handleError(error)
   }
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validated = createQuizValidator.parse(body)
     const quiz = await QuizService.createQuiz(payload!.userId, validated.title)
-    return createdResponse(quiz, 'Quiz créé avec succès')
+    return createdResponse({quiz:quiz}, 'Quiz créé avec succès')
   } catch (error) {
     return handleError(error)
   }

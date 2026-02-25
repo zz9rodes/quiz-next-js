@@ -12,7 +12,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const { id } = await params
 
     const participation = await ParticipationService.getParticipationDetails(id, payload!.userId)
-    return okResponse(participation, 'Détails de la participation')
+    return okResponse({participation:participation}, 'Détails de la participation')
   } catch (error) {
     return handleError(error)
   }

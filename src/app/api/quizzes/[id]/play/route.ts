@@ -7,7 +7,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   try {
     const { id } = await params
     const quiz = await QuizService.getQuizForPlay(id)
-    return okResponse(quiz, 'Quiz récupéré')
+    return okResponse({quiz:quiz}, 'Quiz récupéré')
   } catch (error) {
     return handleError(error)
   }

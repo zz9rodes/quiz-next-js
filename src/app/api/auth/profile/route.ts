@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const { payload } = authResult
 
     const profile = await AuthService.getProfile(payload!.userId)
-    return okResponse(profile, 'Profil récupéré')
+    return okResponse({user:profile}, 'Profil récupéré')
   } catch (error) {
     return handleError(error)
   }
@@ -25,7 +25,7 @@ export async function PUT(request: NextRequest) {
 
     const body = await request.json()
     const updated = await AuthService.updateProfile(payload!.userId, body.display_name, body.avatar)
-    return okResponse(updated, 'Profil mis à jour')
+    return okResponse({user:updated}, 'Profil mis à jour')
   } catch (error) {
     return handleError(error)
   }

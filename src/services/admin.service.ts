@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { ApiError } from '@/utils/errors'
 
 export class AdminService {
   static async getAllUsers() {
@@ -16,6 +17,66 @@ export class AdminService {
         is_admin: u.isAdmin,
         created_at: u.createdAt.toISOString(),
       })),
+    }
+  }
+
+  static async getUserMessages(userId: string) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    })
+
+    if (!user) {
+      throw new ApiError(404, 'Utilisateur non trouvé', 'NOT_FOUND')
+    }
+
+    const messages = await prisma.anonymousMessage.findMany({
+      where: { recipientId: userId },
+      orderBy: { createdAt: 'desc' },
+    })
+
+    return {
+      user: {
+        id: user.id,
+        display_name: user.fullName,
+        email: user.email,
+        public_key: user.publicKey,
+      },
+      messages: messages.map((m) => ({
+        id: m.id,
+        content: m.content,
+        created_at: m.createdAt.toISOString(),
+      })),
+      total_messages: messages.length,
+    }
+  }
+
+  static async getUserMessagesBypublicKey(publicKey: string) {
+    const user = await prisma.user.findFirst({
+      where: { publicKey: publicKey },
+    })
+
+    if (!user) {
+      throw new ApiError(404, 'Utilisateur non trouvé', 'NOT_FOUND')
+    }
+
+    const messages = await prisma.anonymousMessage.findMany({
+      where: { recipientId: publicKey },
+      orderBy: { createdAt: 'desc' },
+    })
+
+    return {
+      user: {
+        id: user.id,
+        display_name: user.fullName,
+        email: user.email,
+        public_key: user.publicKey,
+      },
+      messages: messages.map((m) => ({
+        id: m.id,
+        content: m.content,
+        created_at: m.createdAt.toISOString(),
+      })),
+      total_messages: messages.length,
     }
   }
 

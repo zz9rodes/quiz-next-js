@@ -97,6 +97,7 @@ export class QuizService {
         id: q.id,
         question_text: q.questionText,
         options: JSON.parse(q.options),
+        correct_option_index:q.correctOptionIndex
         // DO NOT return correct answers!
       })),
     }
