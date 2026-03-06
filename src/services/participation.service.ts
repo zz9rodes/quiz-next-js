@@ -48,7 +48,7 @@ export class ParticipationService {
           selected_option_index: answer.selected_option_index,
           correct_option_index: question.correctOptionIndex,
           is_correct: isCorrect,
-          options:question.options as string[],//  JSON.parse(question.options),
+          options: question.options,
         })
 
         processedAnswers.push({
@@ -67,7 +67,7 @@ export class ParticipationService {
         participantName,
         score,
         totalQuestions,
-        answers: JSON.stringify(processedAnswers),
+        answers: processedAnswers,
       },
     })
 
@@ -107,8 +107,8 @@ export class ParticipationService {
     const results: any[] = []
 
     if (Array.isArray(participation.answers)) {
-      const answers = participation.answers as String[]
-      answers.forEach((answer: any) => {
+      const answers = participation.answers as any[]
+      answers.forEach((answer) => {
         const question = questionsMap.get(answer.question_id)
         if (question) {
           const isCorrect = question.correctOptionIndex === answer.selected_option_index
@@ -118,7 +118,7 @@ export class ParticipationService {
             selected_option_index: answer.selected_option_index,
             correct_option_index: question.correctOptionIndex,
             is_correct: isCorrect,
-            options: question.options as String [] //JSON.parse(question.options),
+            options: question.options,
           })
         }
       })
@@ -174,8 +174,8 @@ export class ParticipationService {
     const results: any[] = []
 
     if (Array.isArray(participation.answers)) {
-      const answers = participation.answers as string[] // JSON.parse(participation.answers)
-      answers.forEach((answer: any) => {
+      const answers = participation.answers as any[]
+      answers.forEach((answer) => {
         const question = questionsMap.get(answer.question_id)
         if (question) {
           const isCorrect = question.correctOptionIndex === answer.selected_option_index
@@ -185,7 +185,7 @@ export class ParticipationService {
             selected_option_index: answer.selected_option_index,
             correct_option_index: question.correctOptionIndex,
             is_correct: isCorrect,
-            options: question.options as string[] ,// JSON.parse(question.options),
+            options: question.options,
           })
         }
       })

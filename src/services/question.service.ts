@@ -34,7 +34,7 @@ export class QuestionService {
       data: {
         quizId,
         questionText,
-        options: JSON.stringify(options),
+        options,
         correctOptionIndex,
         orderIndex,
       },
@@ -44,7 +44,7 @@ export class QuestionService {
       id: question.id,
       quiz_id: question.quizId,
       question_text: question.questionText,
-      options: question.options as String[],
+      options: question.options,
       correct_option_index: question.correctOptionIndex,
       order_index: question.orderIndex,
     }
@@ -74,7 +74,7 @@ export class QuestionService {
       where: { id: questionId },
       data: {
         ...(questionText && { questionText }),
-        ...(options && { options: JSON.stringify(options) }),
+        ...(options && { options }),
         ...(correctOptionIndex !== undefined && { correctOptionIndex }),
       },
     })
@@ -82,7 +82,7 @@ export class QuestionService {
     return {
       id: updated.id,
       question_text: updated.questionText,
-      options: updated.options as String[],
+      options: updated.options,
       correct_option_index: updated.correctOptionIndex,
     }
   }
