@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const ALLOWED_ORIGIN = "http://localhost:5173"; // frontend Vite
+const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN ?? 'http://localhost:5173'; // frontend Vite
 
 
 export function middleware(req: NextRequest) {
