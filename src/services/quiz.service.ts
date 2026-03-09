@@ -17,7 +17,7 @@ export class QuizService {
           id: true,
           title: true,
           user: {
-            select: { fullName: true },
+            select: { fullName: true,publicKey:true },
           },
           _count: {
             select: { questions: true },
@@ -32,6 +32,7 @@ export class QuizService {
         id: q.id,
         title: q.title,
         author_name: q.user.fullName,
+        author_public_key: q.user.publicKey,  
         question_count: q._count.questions,
       })),
       pagination: {
