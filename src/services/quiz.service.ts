@@ -2,6 +2,47 @@ import { prisma } from '@/lib/prisma'
 import { ApiError } from '@/utils/errors'
 
 export class QuizService {
+  static async getAllQuizzesPaginated(page: number = 1, perPage: number = 8) {
+    const skip = (page - 1) * perPage
+
+    const where = { isPublic: true }
+
+    const [quizzes, total] = await Promise.all([
+      prisma.quiz.findMany({
+        where,
+        skip,
+        take: perPage,
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          title: true,
+          user: {
+            select: { fullName: true },
+          },
+          _count: {
+            select: { questions: true },
+          },
+        },
+      }),
+      prisma.quiz.count({ where }),
+    ])
+
+    return {
+      quizzes: quizzes.map((q) => ({
+        id: q.id,
+        title: q.title,
+        author_name: q.user.fullName,
+        question_count: q._count.questions,
+      })),
+      pagination: {
+        page,
+        per_page: perPage,
+        total,
+        total_pages: Math.ceil(total / perPage),
+      },
+    }
+  }
+
   static async createQuiz(userId: string, title: string) {
     const quiz = await prisma.quiz.create({
       data: {
