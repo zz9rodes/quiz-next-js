@@ -195,7 +195,7 @@ export class QuizService {
       where: { id: quizId },
       include: {
         participants: {
-          orderBy: { completedAt: 'desc' },
+          orderBy: { score:'desc' },
         },
         questions: true,
       },
