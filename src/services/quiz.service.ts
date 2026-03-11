@@ -275,6 +275,50 @@ export class QuizService {
     }
   }
 
+  static async getPublicQuizStats(quizId: string) {
+    const quiz = await prisma.quiz.findUnique({
+      where: { id: quizId, isPublic: true },
+      include: {
+        participants: {
+          orderBy: { score: 'desc' },
+          take: 5,
+        },
+        questions: true,
+      },
+    })
+
+    if (!quiz) {
+      throw new ApiError(404, 'Quiz non trouvé', 'NOT_FOUND')
+    }
+
+    const participantCount = await prisma.participant.count({ where: { quizId } })
+    const allParticipants = await prisma.participant.findMany({
+      where: { quizId },
+      select: { score: true },
+    })
+    const totalScore = allParticipants.reduce((sum, p) => sum + p.score, 0)
+    const averageScore = participantCount > 0 ? totalScore / participantCount : 0
+    const averagePercentage = participantCount > 0 ? (totalScore / (participantCount * quiz.questions.length)) * 100 : 0
+
+    return {
+      quiz: {
+        id: quiz.id,
+        title: quiz.title,
+      },
+      participantCount,
+      questionCount: quiz.questions.length,
+      averageScore: Number(averageScore.toFixed(2)),
+      averagePercentage: Number(averagePercentage.toFixed(2)),
+      top5: quiz.participants.map((p) => ({
+        participant_name: p.participantName,
+        score: p.score,
+        total_questions: p.totalQuestions,
+        percentage: Number(((p.score / p.totalQuestions) * 100).toFixed(2)),
+        completed_at: p.completedAt.toISOString(),
+      })),
+    }
+  }
+
   static async getQuizParticipants(quizId: string, userId: string) {
     const quiz = await prisma.quiz.findUnique({
       where: { id: quizId },
